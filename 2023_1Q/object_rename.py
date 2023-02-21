@@ -18,14 +18,14 @@ if len( selObj ) == 1:
     if len(selChildren) ==9:
         errerCheck=True
 if errerCheck:
-    print '0k'
+    print ('0k')
     selObj[0].rename('retarget')
     #delete ORG node
     for i in selChildren:
         for j in i.getChildren(s=1):
             if j.nodeName()[-5:]!='Shape':
                 pm.delete(j)
-            print j
+            print (j)
             # 24049
             if j.numVertices() == 24049:
                 i.rename('head_retarget')
