@@ -8,8 +8,8 @@ class BaseWithMayaUI():
     def UI(self):
         with pm.window(self.windowName,menuBar=True,menuBarVisible=True,title='BASE_UI',w=400) as win:
             with pm.columnLayout():
-            pm.button('topAbutton',label=u'BASE BUTTON',w=400,c=lambda _:self.run('value'))
-            pm.textField('topAtextfield',w=400)
+                pm.button('topAbutton',label=u'BASE BUTTON',w=400,c=lambda _:self.run('value'))
+                pm.textField('topAtextfield',w=400)
         pm.showWindow(win)
     def run(self,test):
         print test
