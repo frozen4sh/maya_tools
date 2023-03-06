@@ -124,38 +124,48 @@ class UE_MH_RDNA_UI(mayaMixin.MayaQWidgetBaseMixin,QWidget):
         # self.table_save_json_btn.clicked.connect(self.table_save_json_run)
         self.allQVBoxLayout.addWidget(self.table_cMHdnaLoad_btn)
         
-        # self.h_line = QFrame()
-        # self.h_line.setFrameShape(QFrame.HLine)
-        # self.h_line.setFrameShadow(QFrame.Sunken)
-        # self.allQVBoxLayout.addWidget(self.h_line)
         self.DrawLine()
         
         self.allQVBoxLayout.addWidget(self.table_cRjntLoad_btn)
-        
-        # self.h_line = QFrame()
-        # self.h_line.setFrameShape(QFrame.HLine)
-        # self.h_line.setFrameShadow(QFrame.Sunken)
-        # self.allQVBoxLayout.addWidget(self.h_line)
 
-        
+        self.DrawLine()
+
         self.allQVBoxLayout.addWidget(self.table_import_json_btn)
-        # self.allQVBoxLayout.addWidget(self.h_line)
+
+        self.DrawLine()
         
         self.allQVBoxLayout.addWidget(self.table_import_dna_btn)        
+
+        self.DrawLine()
+        
         self.allQVBoxLayout.addWidget(self.textedit_dnaPath)
+
+        self.DrawLine()
         
         self.allQVBoxLayout.addWidget(self.table)
+
+        self.DrawLine()
         
         self.allQVBoxLayout.addWidget(self.dna_export_json_btn)
+
+        self.DrawLine()
+        
         self.allQVBoxLayout.addWidget(self.table_export_json_btn)
 
+        self.DrawLine()
+
         self.allQVBoxLayout.addWidget(self.table_save_json_btn)
+
+        self.DrawLine()
+        
         self.setLayout(self.allQVBoxLayout)
         
     def DrawLine(self):
-        self.h_line = QFrame()
-        self.h_line.setFrameStyle(QFrame.HLine | QFrame.Sunken)
-        self.allQVBoxLayout.addWidget(self.h_line)
+        frame = QFrame()
+        frame.setFrameShape(QFrame.HLine)
+        frame.setFrameShadow(QFrame.Sunken)
+        self.allQVBoxLayout.addWidget(frame)
+        
         
         
 if cmds.window(u"UE_MH_DNA_Custom_UI_V20230220", q=True, ex=True):
