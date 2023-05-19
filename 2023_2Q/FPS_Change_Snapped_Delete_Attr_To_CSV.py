@@ -11,7 +11,7 @@ https://github.com/frozen4sh
 import maya.cmds as cmds
 import os
 import pymel.core as pm
-
+import csv
 
 cmds.currentUnit( time='ntsc' )
 
@@ -221,33 +221,38 @@ cmds.file( save=True)
 
 
 cmds.select ('CTRL_expressions')
-# Define function to create UI pop-up
-def create_ui():
-    # Create window
-    window_name = 'Export_Attributes'
-    if cmds.window(window_name, exists=True):
-        cmds.deleteUI(window_name)
-    window = cmds.window(window_name, title='Export Attributes', sizeable=False)
-    cmds.columnLayout(adjustableColumn=True)
+# # Define function to create UI pop-up
+# def create_ui():
+#     # Create window
+#     window_name = 'Export_Attributes'
+#     if cmds.window(window_name, exists=True):
+#         cmds.deleteUI(window_name)
+#     window = cmds.window(window_name, title='Export Attributes', sizeable=False)
+#     cmds.columnLayout(adjustableColumn=True)
 
-    # Add text fields for start and end frames
-    cmds.text(label='Start Frame:')
-    minTime_int = cmds.playbackOptions(q=1,minTime=1)
-    start_frame_field = cmds.intField(value=minTime_int, minValue=0)
-    cmds.text(label='End Frame:')
-    maxTime_int = cmds.playbackOptions(q=1,maxTime=1)
-    end_frame_field = cmds.intField(value=maxTime_int, minValue=0)
+#     # Add text fields for start and end frames
+#     cmds.text(label='Start Frame:')
+#     minTime_int = cmds.playbackOptions(q=1,minTime=1)
+#     start_frame_field = cmds.intField(value=minTime_int, minValue=0)
+#     cmds.text(label='End Frame:')
+#     maxTime_int = cmds.playbackOptions(q=1,maxTime=1)
+#     end_frame_field = cmds.intField(value=maxTime_int, minValue=0)
 
-    # Add button to export attributes
-    cmds.separator(height=10, style='none')
-    cmds.button(label='Export', command=lambda *args: export_attributes(start_frame_field, end_frame_field,window))
-    cmds.showWindow(window)
+#     # Add button to export attributes
+#     cmds.separator(height=10, style='none')
+#     cmds.button(label='Export', command=lambda *args: export_attributes(start_frame_field, end_frame_field,window))
+#     cmds.showWindow(window)
+
+
+minTime_int = int(cmds.playbackOptions(q=1,minTime=1))
+maxTime_int = int(cmds.playbackOptions(q=1,maxTime=1))
 
 # Define function to export attributes
-def export_attributes(start_frame_field, end_frame_field,window):
-    # Get start and end frames from UI fields
-    start_frame = cmds.intField(start_frame_field, query=True, value=True)
-    end_frame = cmds.intField(end_frame_field, query=True, value=True)
+def export_attributes(a, b):
+    
+    # # Get start and end frames from UI fields
+    # start_frame = cmds.intField(start_frame_field, query=True, value=True)
+    # end_frame = cmds.intField(end_frame_field, query=True, value=True)
 
     # Get selected object
     selected_obj = cmds.ls(selection=True)
@@ -286,7 +291,7 @@ def export_attributes(start_frame_field, end_frame_field,window):
         writer.writerow(['Frame'] + attributes)
 
         # Write data rows for each frame in the range
-        for frame in range(start_frame, end_frame+1):
+        for frame in range(a, b+1):
             cmds.currentTime(frame)
             data_rows = [frame]
             for attribute in attributes:
@@ -295,6 +300,7 @@ def export_attributes(start_frame_field, end_frame_field,window):
             writer.writerow(data_rows)
             
     print('Attributes saved to ' + scene_name + '.csv')    
-    cmds.deleteUI(window)
-# Call the create_ui() function to start the UI
-create_ui()
+    # cmds.deleteUI(window)
+# # Call the create_ui() function to start the UI
+# create_ui()
+export_attributes(minTime_int, maxTime_int)
