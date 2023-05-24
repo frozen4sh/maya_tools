@@ -17,14 +17,14 @@ cmds.file( r"Z:\DigitalHuman\rvh\ml\yehunhwang\data\maya\TTS_Danielle_full_rig.m
 # with open(text_file_path, 'r') as f:
 #     data_str = f.readlines()
 
-wav_file = r"Z:\DigitalHuman\rvh\ml\yehunhwang\data\wav\TTS_Voice_001.wav"
+wav_file = r"Z:\DigitalHuman\rvh\ml\yehunhwang\data\iphone\20230522_rvh_viseme2_1\Split\rvh_viseme_1_iPhone_Split_1.wav"
 with open(wav_file, 'rb') as f:
     getdata=requests.post('http://192.168.10.229:8401/uploadfiles', files={'files': f})
 data_str = ''
 data_str = getdata.text
 
 # 텍스트를 저장할 파일을 엽니다. 
-file = open(r"Z:\DigitalHuman\rvh\ml\yehunhwang\data\numpy\temp\TTS_Voice_001_M0.txt", "w")
+file = open(r"Z:\DigitalHuman\rvh\ml\yehunhwang\data\numpy\temp\rvh_viseme_1_iPhone_Split_1.txt", "w")
 
 # 파일에 쓸 텍스트를 작성합니다. 
 text = getdata.text 
