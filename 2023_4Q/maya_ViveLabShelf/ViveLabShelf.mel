@@ -1,0 +1,58 @@
+// MainShelfLayout 생성
+string $shelfName = "ViveLabShelf";
+string $shelfLayoutName = "ViveLabShelf";
+string $buttonLabel = "ViveTool";
+int $chackNum = 0;
+
+
+if (!`shelfLayout -exists $shelfName`) {
+    $shelfName = `shelfLayout -cellWidth 33 -cellHeight 33 -parent "ShelfLayout" "ViveLabShelf"`;
+}
+
+
+
+// shelfLayout가 존재하는지 확인
+if (`shelfLayout -exists $shelfLayoutName`) {
+    string $shelfButtons[] = `shelfLayout -query -childArray $shelfLayoutName`;
+
+    // shelfButtons 배열을 반복하면서 버튼 레이블과 일치하는 버튼이 있는지 확인
+    for ($button in $shelfButtons) {
+        if (`shelfButton -query -label $button` == $buttonLabel) {
+            //print ("Button with label '" + $buttonLabel + "' exists in shelfLayout '" + $shelfLayoutName + "'.\n");
+            $chackNum=1;
+            break;
+        }
+    }
+
+
+} else {
+    $chackNum=0;
+
+}
+
+if ($chackNum!=1){
+    // 사용자 정의 셀프 아이콘 추가
+
+    string $command = "python(\"exec(open('Z:/Private_Folder/kyuseokKim/test_Git/Git_Clone_mayaTool/reLoadMayaTool.py',encoding='utf-8').read())\");";
+
+    string $buttonLabel = "ViveTool";
+    string $buttonCommand = $command ;
+
+
+    
+    string $buttonImage = "Z:/Private_Folder/kyuseokKim/test_Git/ui/icon/vlab.png";
+    
+    if (!`shelfButton -exists $buttonLabel`) {
+        shelfButton
+            -parent $shelfName
+            -enable 1
+            -width 33
+            -height 33
+            -manage 1
+            -visible 1
+            -label $buttonLabel
+            -image $buttonImage
+            -style "iconOnly"
+            -command $buttonCommand;
+    }
+}

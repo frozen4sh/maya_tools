@@ -1,0 +1,287 @@
+{
+    "buttonDic": {
+        "ui": [
+            "createPNG.py",
+            "editButtonJSON.py",
+            "createPNG_text.py",
+            ""
+        ],
+        "StudyPython": [
+            "1_1_DataType_Number.py",
+            "1_2_1_DataType_String.py",
+            "1_2_2_DataType_String.py",
+            "1_3_DataType_List.py",
+            "1_4_DataType_Tuple.py",
+            "1_5_DataType_Dictionary.py",
+            "1_6_DataType_Set.py",
+            "2_1_ComparisonOperators.py",
+            "2_2_ControlStatements_IF.py",
+            "2_3_ControlStatements_While.py",
+            "ETC_numpy.py",
+            ""
+        ],
+        "arkit51_Maya_metahumanCtrl_Rig": [
+            "arkit51_Maya_metahumanCtrl_Rig.py",
+            ""
+        ],
+        "http_192_168_10_220_8005_tts": [
+            "http_192_168_10_220_8005_tts.py",
+            ""
+        ],
+        "http192_168_10_299_20040_history_maya": [
+            "http_192_168_10_229_20041_history.py",
+            ""
+        ],
+        "http_192_168_10_229_20041_lue1": [
+            "export_D_drive_mb_to_fbx.py",
+            "http_192_168_10_229_20041_lue2.py",
+            ""
+        ],
+        "RDNA_Cailibration_NeutralJoint_Custom_UI": [
+            "RDNA_Cailibration_NeutralJoint_Custom_UI.py",
+            ""
+        ],
+        "Git_Clone_mayaTool": [
+            "Git_Clone_mayaTool.py",
+            "reLoadMayaTool.py",
+            ""
+        ],
+        "ETC": [
+            "etc_00_baseGrp.py",
+            "test_createSparseMatrix.py",
+            ""
+        ]
+    },
+    "buttonImageDic": {
+        "ui": [
+            "ui/icon/color255_217_79.png",
+            ""
+        ],
+        "createPNG.py": [
+            "ui/icon/color255_217_79.png",
+            ""
+        ],
+        "editButtonJSON.py": [
+            "ui/icon/color255_217_79.png",
+            ""
+        ],
+        "createPNG_text.py": [
+            "ui/icon/text_png.png",
+            ""
+        ],
+        "StudyPython": [
+            "ui/icon/study_python.png",
+            ""
+        ],
+        "1_1_DataType_Number.py": [
+            "",
+            ""
+        ],
+        "1_2_1_DataType_String.py": [
+            "",
+            ""
+        ],
+        "1_2_2_DataType_String.py": [
+            "",
+            ""
+        ],
+        "1_3_DataType_List.py": [
+            "",
+            ""
+        ],
+        "1_4_DataType_Tuple.py": [
+            "",
+            ""
+        ],
+        "1_5_DataType_Dictionary.py": [
+            "",
+            ""
+        ],
+        "1_6_DataType_Set.py": [
+            "",
+            ""
+        ],
+        "2_1_ComparisonOperators.py": [
+            "",
+            ""
+        ],
+        "2_2_ControlStatements_IF.py": [
+            "",
+            ""
+        ],
+        "2_3_ControlStatements_While.py": [
+            "",
+            ""
+        ],
+        "ETC_numpy.py": [
+            "",
+            ""
+        ],
+        "arkit51_Maya_metahumanCtrl_Rig": [
+            "ui/icon/red0.png",
+            ""
+        ],
+        "arkit51_Maya_metahumanCtrl_Rig.py": [
+            "ui/icon/red0.png",
+            ""
+        ],
+        "http_192_168_10_220_8005_tts": [
+            "ui/icon/color146_179_70.png",
+            ""
+        ],
+        "http_192_168_10_220_8005_tts.py": [
+            "ui/icon/color146_179_70.png",
+            ""
+        ],
+        "http192_168_10_299_20040_history_maya": [
+            "ui/icon/color255_217_79.png",
+            ""
+        ],
+        "http_192_168_10_229_20041_history.py": [
+            "ui/icon/color255_217_79.png",
+            ""
+        ],
+        "http_192_168_10_229_20041_lue1": [
+            "ui/icon/color104_75_10.png",
+            ""
+        ],
+        "export_D_drive_mb_to_fbx.py": [
+            "ui/icon/color104_75_10.png",
+            ""
+        ],
+        "http_192_168_10_229_20041_lue2.py": [
+            "ui/icon/color104_75_10.png",
+            ""
+        ],
+        "RDNA_Cailibration_NeutralJoint_Custom_UI": [
+            "ui/icon/color146_179_70.png",
+            ""
+        ],
+        "RDNA_Cailibration_NeutralJoint_Custom_UI.py": [
+            "ui/icon/color146_179_70.png",
+            ""
+        ],
+        "Git_Clone_mayaTool": [
+            "ui/icon/red1.png",
+            ""
+        ],
+        "Git_Clone_mayaTool.py": [
+            "ui/icon/red1.png",
+            ""
+        ],
+        "reLoadMayaTool.py": [
+            "ui/icon/red1.png",
+            ""
+        ],
+        "ETC": [
+            "ui/icon/meatbone.png",
+            ""
+        ],
+        "etc_00_baseGrp.py": [
+            "ui/icon/meatbone.png",
+            ""
+        ],
+        "test_createSparseMatrix.py": [
+            "ui/icon/meatbone.png",
+            ""
+        ]
+    },
+    "buttonCommandDic": {
+        "createPNG.py": [
+            "ui/createPNG.py",
+            ""
+        ],
+        "editButtonJSON.py": [
+            "ui/editButtonJSON.py",
+            ""
+        ],
+        "createPNG_text.py": [
+            "ui/createPNG_text.py",
+            ""
+        ],
+        "1_1_DataType_Number.py": [
+            "StudyPython/1_1_DataType_Number.py",
+            ""
+        ],
+        "1_2_1_DataType_String.py": [
+            "StudyPython/1_2_1_DataType_String.py",
+            ""
+        ],
+        "1_2_2_DataType_String.py": [
+            "StudyPython/1_2_2_DataType_String.py",
+            ""
+        ],
+        "1_3_DataType_List.py": [
+            "StudyPython/1_3_DataType_List.py",
+            ""
+        ],
+        "1_4_DataType_Tuple.py": [
+            "StudyPython/1_4_DataType_Tuple.py",
+            ""
+        ],
+        "1_5_DataType_Dictionary.py": [
+            "StudyPython/1_5_DataType_Dictionary.py",
+            ""
+        ],
+        "1_6_DataType_Set.py": [
+            "StudyPython/1_6_DataType_Set.py",
+            ""
+        ],
+        "2_1_ComparisonOperators.py": [
+            "StudyPython/2_1_ComparisonOperators.py",
+            ""
+        ],
+        "2_2_ControlStatements_IF.py": [
+            "StudyPython/2_2_ControlStatements_IF.py",
+            ""
+        ],
+        "2_3_ControlStatements_While.py": [
+            "StudyPython/2_3_ControlStatements_While.py",
+            ""
+        ],
+        "ETC_numpy.py": [
+            "StudyPython/ETC_numpy.py",
+            ""
+        ],
+        "arkit51_Maya_metahumanCtrl_Rig.py": [
+            "arkit51_Maya_metahumanCtrl_Rig/arkit51_Maya_metahumanCtrl_Rig.py",
+            ""
+        ],
+        "http_192_168_10_220_8005_tts.py": [
+            "http_192_168_10_220_8005_tts/http_192_168_10_220_8005_tts.py",
+            ""
+        ],
+        "http_192_168_10_229_20041_history.py": [
+            "http192_168_10_299_20040_history_maya/http_192_168_10_229_20041_history.py",
+            ""
+        ],
+        "export_D_drive_mb_to_fbx.py": [
+            "http_192_168_10_229_20041_lue1/export_D_drive_mb_to_fbx.py",
+            ""
+        ],
+        "http_192_168_10_229_20041_lue2.py": [
+            "http_192_168_10_229_20041_lue1/http_192_168_10_229_20041_lue2.py",
+            ""
+        ],
+        "RDNA_Cailibration_NeutralJoint_Custom_UI.py": [
+            "RDNA_Cailibration_NeutralJoint_Custom_UI/RDNA_Cailibration_NeutralJoint_Custom_UI.py",
+            ""
+        ],
+        "Git_Clone_mayaTool.py": [
+            "Git_Clone_mayaTool/Git_Clone_mayaTool.py",
+            ""
+        ],
+        "reLoadMayaTool.py": [
+            "Git_Clone_mayaTool/reLoadMayaTool.py",
+            ""
+        ],
+        "etc_00_baseGrp.py": [
+            "ETC/etc_00_baseGrp.py",
+            ""
+        ],
+        "test_createSparseMatrix.py": [
+            "ETC/test_createSparseMatrix.py",
+            ""
+        ]
+    }
+}
