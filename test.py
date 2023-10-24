@@ -5,7 +5,7 @@ setAttr "blendShape7.tooth_d_u" 1; setAttr "blendShape7.brow_lower_l" 1; setAttr
 import maya.cmds as cmds
 import sys
 #scriptpath =r'C:\Python27\Lib\site-packages'
-scriptpath =r'C:\Users\vivestudios\AppData\Local\Programs\Python\Python37\Lib\site-packages'
+scriptpath =r'C:\Users\hyh14\AppData\Local\Programs\Python\Python312\Lib\site-packages'
 sys.path.append(scriptpath)
 import maya.cmds as cmds
 import numpy as np

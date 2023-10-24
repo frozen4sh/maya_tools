@@ -4,7 +4,7 @@ import maya.cmds as cmds
 import pymel.core as pm
 import sys
 #scriptpath =r'C:\Python27\Lib\site-packages'
-scriptpath =r'C:\Users\vivestudios\AppData\Local\Programs\Python\Python37\Lib\site-packages'
+scriptpath =r'C:\Users\hyh14\AppData\Local\Programs\Python\Python312\Lib\site-packages'
 sys.path.append(scriptpath)
 import numpy as np
 import requests
