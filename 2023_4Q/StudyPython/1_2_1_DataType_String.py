@@ -27,7 +27,7 @@ strsum1 = str1 + str2
 strsum2 = str1 + ' ' + str2 # 두 문자열 변수 사이에 띄어쓰기 넣기
 strsum3 = '"' + str1 + ' ' + str2 + '"' # 큰따옴표 추가하기
 strsum4 = "Peter\'s friend said, " + '"' + str1 + '"' # 문자열 덧셈 연산 응용하기
-strmul1 = str1 * 2 # 문자열 곱하기 연산
+strmul1 = str1 * 20 # 문자열 곱하기 연산
 
 print('strsum1 : ', strsum1)
 print('strsum2 : ', strsum2)

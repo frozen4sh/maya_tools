@@ -19,6 +19,7 @@ str_f6 = "a is %0.3f" %a # 소수점 3자리까지 표현
 print(str_f6)
 
 # 문자 개수 세기
+str1 = 'Hello'
 count_hello = str1.count('l') 
 print('Hello에서 l의 개수 : ', count_hello)
 

@@ -17,6 +17,8 @@ print(num3,'의 자료형은', type(num3))
 print(num4,'의 자료형은', type(num4))
 print(num5,'의 자료형은', type(num5))
 print(num6,'의 자료형은', type(num6))
+print("\n") # 줄바꿈
+print("\n") # 줄바꿈
 
 # 숫자형 변수 연산 - 연산에 따른 자료형 변화에 주의
 sum1 = num1 + num1 # int + int => int
