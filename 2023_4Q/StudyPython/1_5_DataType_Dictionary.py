@@ -43,3 +43,11 @@ print('\n')
 # 딕셔너리의 key, value 모두 제거
 num_dict.clear()
 print(num_dict)
+
+
+all_jnt_names = GetAllJointInSelectedObjs()
+neutral = dict()
+for i in all_jnt_names:
+    neutral[i] = GetJointPosition(i)
+print(neutral)
+
