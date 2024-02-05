@@ -3,7 +3,7 @@ import maya.cmds as cmds
 class BoneControllerUI:
     def __init__(self):
         self.window_name = "boneControllerWindow"
-        self.column_layout = "columnLayout"
+        # self.column_layout = "columnLayout"
         self.bone_list = []  # Replace with your bone names
         self.controller_list = []  # Replace with your controller names
         self.bone_text_scroll_list = "boneTextScrollList"
@@ -17,28 +17,45 @@ class BoneControllerUI:
         # Create the main window
         cmds.window(self.window_name, title="Bone Controller Connect", widthHeight=(450, 250))
 
-        # Create a column layout for the UI
-        cmds.columnLayout(self.column_layout, adjustableColumn=True)
+        # Create the main layout with two columns
+        main_layout = cmds.rowLayout(numberOfColumns=2, columnWidth2=(200, 200), adjustableColumn=2)
 
-        # Create headers for "Bone" and "Controller" columns
-        cmds.rowLayout(numberOfColumns=2, columnWidth2=(200, 200), columnAttach=[(1, 'both', 0), (2, 'both', 0)])
-        cmds.text(label="Bone", align="center", font="boldLabelFont")
-        cmds.text(label="Controller", align="center", font="boldLabelFont")
-        cmds.setParent(self.column_layout)
 
-        # Create text scroll lists for bones and controllers
-        self.bone_text_scroll_list = cmds.textScrollList(
-            numberOfRows=12,
-            allowMultiSelection=False,
-            append=self.bone_list,
-            width=200,
-        )
-        self.controller_text_scroll_list = cmds.textScrollList(
-            numberOfRows=12,
-            allowMultiSelection=False,
-            append=self.controller_list,
-            width=200
-        )
+        # Create the first column with a textScrollList
+        # cmds.columnLayout(self.column_layout, adjustableColumn=True)
+        cmds.columnLayout(adjustableColumn=True)
+        cmds.text(label="Bone")
+        column1_list = cmds.textScrollList(numberOfRows=8, allowMultiSelection=True, append=["Item 1", "Item 2", "Item 3"])
+        cmds.setParent(main_layout)
+
+        # Create the first column with a textScrollList
+        # cmds.columnLayout(self.column_layout, adjustableColumn=True)
+        cmds.columnLayout(adjustableColumn=True)
+        cmds.text(label="Controller")
+        column2_list = cmds.textScrollList(numberOfRows=8, allowMultiSelection=True, append=["Item 1", "Item 2", "Item 3"])
+        cmds.setParent(main_layout)
+
+
+
+        # # Create headers for "Bone" and "Controller" columns
+        # cmds.rowLayout(numberOfColumns=2, columnWidth2=(200, 200), columnAttach=[(1, 'both', 0), (2, 'both', 0)])
+        # cmds.text(label="Bone", align="center", font="boldLabelFont")
+        # cmds.text(label="Controller", align="center", font="boldLabelFont")
+        # cmds.setParent(self.column_layout)
+
+        # # Create text scroll lists for bones and controllers
+        # self.bone_text_scroll_list = cmds.textScrollList(
+        #     numberOfRows=12,
+        #     allowMultiSelection=False,
+        #     append=self.bone_list,
+        #     width=200,
+        # )
+        # self.controller_text_scroll_list = cmds.textScrollList(
+        #     numberOfRows=12,
+        #     allowMultiSelection=False,
+        #     append=self.controller_list,
+        #     width=200
+        # )
 
         # Add buttons on the right side
         cmds.rowLayout(numberOfColumns=3, columnWidth3=(100, 100, 100),
@@ -46,7 +63,7 @@ class BoneControllerUI:
         cmds.button(label="Add Bone", command=self.add_bone_button_callback, width=100)
         cmds.button(label="Add Controller", command=self.add_controller_button_callback, width=100)
         cmds.button(label="Clear Lists", command=self.clear_lists_button_callback, width=100)
-        cmds.setParent(self.column_layout)
+        cmds.setParent(main_layout)
 
         # Connect button at the bottom
         cmds.button(label="Connect", command=self.connect_button_callback)
