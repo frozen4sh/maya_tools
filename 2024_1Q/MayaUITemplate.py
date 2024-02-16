@@ -30,10 +30,13 @@ class MayaUITemplate(QtWidgets.QWidget):
         self.resize(1000, 800)      
         # locate UI widgets
         self.btn_addBone = self.widget.findChild(QtWidgets.QPushButton, 'btn_addBone')        
+        self.btn_addCtrl = self.widget.findChild(QtWidgets.QPushButton, 'btn_addCtrl')        
         self.btn_close = self.widget.findChild(QtWidgets.QPushButton, 'btn_close')        
         self.scroll_list_bone = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_L')
+        self.scroll_list_ctrl = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_R')
         # assign functionality to buttons
-        self.btn_addBone.clicked.connect(self.add)
+        self.btn_addBone.clicked.connect(self.addBone)
+        self.btn_addCtrl.clicked.connect(self.addCtrl)
         self.btn_close.clicked.connect(self.closeWindow)
         self.bone_list = []  # Replace with your bone names
         
@@ -47,7 +50,7 @@ class MayaUITemplate(QtWidgets.QWidget):
     """
     Your code goes here
     """
-    def add(self):
+    def addBone(self):
         # cmds.polySphere()
         # print ('Add Bone Button is pressed')
         
@@ -70,6 +73,31 @@ class MayaUITemplate(QtWidgets.QWidget):
         # self.update_text_scroll_list(self.scroll_list_bone, self.bone_list)
 
         print(f"Bone '{selected_bone[0]}' added to the list.")
+    
+    def addCtrl(self):
+        # cmds.polySphere()
+        # print ('Add Bone Button is pressed')
+        
+        # Get the selected bone
+        selected_ctrl = cmds.ls(selection=True, type="transform")
+        if not selected_ctrl:
+            cmds.warning("Please select a controller.")
+            return
+        
+        print("a")
+        self.scroll_list_ctrl.addItem(selected_ctrl[0])
+
+        # Add the selected bone to the bone_list
+        # self.scroll_list_bone.addItems(selected_bone[0])
+        
+
+        
+
+        # Update the bone text scroll list with the new data
+        # self.update_text_scroll_list(self.scroll_list_bone, self.bone_list)
+
+        print(f"Bone '{selected_ctrl[0]}' added to the list.")
+       
 
     def update_text_scroll_list(self, text_scroll_list, data_list):
         # Update the text scroll list with the given data list
