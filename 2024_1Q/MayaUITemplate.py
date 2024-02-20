@@ -29,7 +29,7 @@ class MayaUITemplate(QtWidgets.QWidget):
         """
         super(MayaUITemplate, self).__init__(parent = parent)
         self.setWindowFlags(QtCore.Qt.Window)
-        self.widgetPath = ('D:\\Justin\\Python\\VIVE_Python\\QT_Test\\demo.ui')
+        self.widgetPath = ('D:\\Justin\\Python\\VIVE_Python\\QT_Test\\FK_Controller_Tool_ui.ui')
         self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
         self.widget.setParent(self)
         
@@ -103,12 +103,11 @@ class MayaUITemplate(QtWidgets.QWidget):
         # Connect each pair of bone and controller using parent constraint
         
         
-        ctrl_item_count = self.scroll_list_ctrl.count()
-        ctrl_items = [self.scroll_list_ctrl.item(i).text() for i in range(ctrl_item_count)]
+        item_count = self.scroll_list_ctrl.count()
+        ctrl_items = [self.scroll_list_ctrl.item(i).text() for i in range(item_count)]
         print("Items in QListWidget:", ctrl_items) 
-
-        bone_item_count = self.scroll_list_ctrl.count()
-        bone_items = [self.scroll_list_bone.item(i).text() for i in range(bone_item_count)]
+        
+        bone_items = [self.scroll_list_bone.item(i).text() for i in range(item_count)]
         print("Items in QListWidget:", bone_items) 
 
 

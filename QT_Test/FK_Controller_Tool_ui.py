@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Justin\Python\VIVE_Python\QT_Test\demo.ui'
+# Form implementation generated from reading ui file 'd:\Justin\Python\VIVE_Python\QT_Test\FK_Controller_Tool.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
