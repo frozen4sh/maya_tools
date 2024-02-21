@@ -3,6 +3,10 @@ Justin's FK -> Controller Tool
 Created by Justin Yehun Hwang 20/02/2024
 This tool helps to connect between controller and exist bone animaiton.
 
+# future update list
+1. Save and load list to/from CSV 
+2. Window size change
+
 Maya/QT UI template
 Maya 2023
 """
@@ -29,7 +33,7 @@ class MayaUITemplate(QtWidgets.QWidget):
         """
         super(MayaUITemplate, self).__init__(parent = parent)
         self.setWindowFlags(QtCore.Qt.Window)
-        self.widgetPath = ('D:\\Justin\\Python\\VIVE_Python\\QT_Test\\FK_Controller_Tool_ui.ui')
+        self.widgetPath = ('D:\\Justin\\Python\\VIVE_Python\\QT_Test\\FK_Controller_Tool.ui')
         self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
         self.widget.setParent(self)
         
