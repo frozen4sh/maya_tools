@@ -33,7 +33,7 @@ class MayaUITemplate(QtWidgets.QWidget):
         """
         super(MayaUITemplate, self).__init__(parent = parent)
         self.setWindowFlags(QtCore.Qt.Window)
-        self.widgetPath = ('D:\\Justin\\Python\\VIVE_Python\\QT_Test\\FK_Controller_Tool.ui')
+        self.widgetPath = ('FK_Controller_Tool.ui')
         self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
         self.widget.setParent(self)
         
