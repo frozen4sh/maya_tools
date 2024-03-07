@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'FK_Controller_Tool_ui.py'
+# Form implementation generated from reading ui file 'd:\Justin\Python\maya_tools\FK_Controller_Tool\FK_Controller_Tool.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -61,6 +61,12 @@ class Ui_Form(object):
         self.verticalLayout_4.addWidget(self.btn_connect)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem4)
+        self.btn_saveCSV = QtWidgets.QPushButton(Form)
+        self.btn_saveCSV.setObjectName("btn_saveCSV")
+        self.verticalLayout_4.addWidget(self.btn_saveCSV)
+        self.btn_loadCSV = QtWidgets.QPushButton(Form)
+        self.btn_loadCSV.setObjectName("btn_loadCSV")
+        self.verticalLayout_4.addWidget(self.btn_loadCSV)
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem5)
         self.btn_clearList = QtWidgets.QPushButton(Form)
@@ -83,5 +89,7 @@ class Ui_Form(object):
         self.btn_addBone.setText(_translate("Form", "Add Bone"))
         self.btn_addCtrl.setText(_translate("Form", "Add CTRL"))
         self.btn_connect.setText(_translate("Form", "Connect"))
+        self.btn_saveCSV.setText(_translate("Form", "Save CSV"))
+        self.btn_loadCSV.setText(_translate("Form", "Load CSV"))
         self.btn_clearList.setText(_translate("Form", "Clear List"))
         self.btn_close.setText(_translate("Form", "Close"))
