@@ -85,372 +85,406 @@ Maya 2023
 """
 
 import maya.cmds as cmds
-import maya.mel as mel
-import maya.api.OpenMaya as om
-import csv
-import os
-import pymel as pm
 
-from maya import OpenMayaUI as omui
-from shiboken2 import wrapInstance
-from PySide2 import QtUiTools, QtCore, QtGui, QtWidgets
-from functools import partial # optional, for passing args during signal function calls
-import sys
+def createLocators():
+    print('createLocators')
+    cmds.spaceLocator(n='ik_foot_loc')
+    cmds.spaceLocator(n='ik_pv_loc')
 
-class FK_IK_Switch(QtWidgets.QWidget):
-    """
-    Create a default tool window.
-    """
-    window = None
+def parentLocators():
+    print('parentLocators')
+    cmds.setAttr('FKIKLeg_R.FKIKBlend', 10)
+
+    cmds.parent('ik_foot_loc','IKLeg_R')
+    cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
+    cmds.setAttr('ik_foot_loc.rotate', 0, 0, 0, type="double3")
+    cmds.parent('ik_foot_loc','Ankle_R')
+      
+    cmds.parent('ik_pv_loc','PoleLeg_R')
+    cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+    cmds.parent('ik_pv_loc','Knee_R')
+    cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+
+    cmds.setAttr('FKIKLeg_R.FKIKBlend', 0)
+
+def repeateAndKey():
+    # # Constraint locator and IK controller
+    a=cmds.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
+    b=cmds.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
+
+    # Key 2 controllers
+    cmds.setKeyframe('IKLeg_R')
+    cmds.setKeyframe('PoleLeg_R')
+
+    # Delete constraints
+    cmds.delete(a)
+    cmds.delete(b)   
+
+def deleteConstraintLocators():
     
-    def __init__(self, parent = None):
-        """
-        Initialize class.
-        """
-        super(FK_IK_Switch, self).__init__(parent = parent)
-        self.setWindowFlags(QtCore.Qt.Window)
-        self.widgetPath = ('FK_IK_Switch_renew.ui')
-        self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
-        self.widget.setParent(self)
+    # Delete locators
+    cmds.delete('ik_foot_loc')
+    cmds.delete('ik_pv_loc')
+
+
+
+# Get the start and end frames of the timeline
+start_frame = cmds.playbackOptions(query=True, minTime=True)
+print('start_frame=',start_frame)
+end_frame = cmds.playbackOptions(query=True, maxTime=True)
+print('end_frame=',end_frame)
+
+# Iterate over each frame in the timeline
+
+createLocators()
+parentLocators()
+
+for frame in range(int(start_frame), int(end_frame) + 1):
+    cmds.currentTime(frame)
+
+    print('frame=',frame)
+    repeateAndKey()
+
+deleteConstraintLocators()
+
+
+
+# import maya.cmds as cmds
+# import maya.mel as mel
+# import maya.api.OpenMaya as om
+# import csv
+# import os
+# import pymel as pm
+
+# from maya import OpenMayaUI as omui
+# from shiboken2 import wrapInstance
+# from PySide2 import QtUiTools, QtCore, QtGui, QtWidgets
+# from functools import partial # optional, for passing args during signal function calls
+# import sys
+
+# class FK_IK_Switch(QtWidgets.QWidget):
+#     """
+#     Create a default tool window.
+#     """
+#     window = None
+    
+#     def __init__(self, parent = None):
+#         """
+#         Initialize class.
+#         """
+#         super(FK_IK_Switch, self).__init__(parent = parent)
+#         self.setWindowFlags(QtCore.Qt.Window)
+#         self.widgetPath = ('FK_IK_Switch_renew.ui')
+#         self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
+#         self.widget.setParent(self)
         
-        # set initial window size
-        self.resize(1000, 800)      
+#         # set initial window size
+#         self.resize(1000, 800)      
         
-        # locate UI widgets
-        self.btn_addUFK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addUFK')
-        self.btn_addLFK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addLFK')
+#         # locate UI widgets
+#         self.btn_addUFK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addUFK')
+#         self.btn_addLFK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addLFK')
 
-        self.btn_addUIK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addUIK')
-        self.btn_addLIK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addLIK')
+#         self.btn_addUIK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addUIK')
+#         self.btn_addLIK = self.widget.findChild(QtWidgets.QPushButton, 'btn_addLIK')
 
-        self.btn_switch = self.widget.findChild(QtWidgets.QPushButton, 'btn_switch')
-        self.btn_saveCSV = self.widget.findChild(QtWidgets.QPushButton, 'btn_saveCSV')
-        self.btn_loadCSV = self.widget.findChild(QtWidgets.QPushButton, 'btn_loadCSV')
-        self.btn_clearList = self.widget.findChild(QtWidgets.QPushButton, 'btn_clearList')
-        self.btn_close = self.widget.findChild(QtWidgets.QPushButton, 'btn_close')
+#         self.btn_switch = self.widget.findChild(QtWidgets.QPushButton, 'btn_switch')
+#         self.btn_saveCSV = self.widget.findChild(QtWidgets.QPushButton, 'btn_saveCSV')
+#         self.btn_loadCSV = self.widget.findChild(QtWidgets.QPushButton, 'btn_loadCSV')
+#         self.btn_clearList = self.widget.findChild(QtWidgets.QPushButton, 'btn_clearList')
+#         self.btn_close = self.widget.findChild(QtWidgets.QPushButton, 'btn_close')
 
 
-        self.scroll_list_UFK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_UFK')
-        self.scroll_list_LFK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_LFK')
-        self.scroll_list_UIK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_UIK')
-        self.scroll_list_LIK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_LIK')
-        self.UFK_locator_list =[]
-        self.LFK_locator_list =[]
-        self.UIK_locator_list =[]
-        self.LIK_locator_list =[]
-        self.selected_UIK = []
-        self.selected_LIK = []
+#         self.scroll_list_UFK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_UFK')
+#         self.scroll_list_LFK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_LFK')
+#         self.scroll_list_UIK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_UIK')
+#         self.scroll_list_LIK = self.widget.findChild(QtWidgets.QListWidget,'scroll_list_LIK')
+#         self.UFK_locator_list =[]
+#         self.LFK_locator_list =[]
+#         self.UIK_locator_list =[]
+#         self.LIK_locator_list =[]
+#         self.selected_UIK = []
+#         self.selected_LIK = []
 
 
         
-        # assign functionality to buttons
-        self.btn_addUFK.clicked.connect(self.addUFK)
-        self.btn_addLFK.clicked.connect(self.addLFK)
-        self.btn_addUIK.clicked.connect(self.addUIK)
-        self.btn_addLIK.clicked.connect(self.addLIK)
+#         # assign functionality to buttons
+#         self.btn_addUFK.clicked.connect(self.addUFK)
+#         self.btn_addLFK.clicked.connect(self.addLFK)
+#         self.btn_addUIK.clicked.connect(self.addUIK)
+#         self.btn_addLIK.clicked.connect(self.addLIK)
 
-        self.btn_switch.clicked.connect(self.switch)
-        self.btn_saveCSV.clicked.connect(self.saveCSV)
-        self.btn_loadCSV.clicked.connect(self.loadCSV)
-        self.btn_clearList.clicked.connect(self.clearList)
-        self.btn_close.clicked.connect(self.closeWindow)
-        # self.FK_list = []  # Replace with your bone names         
-        self.FK_items =[]
-        self.IK_items =[]
+#         self.btn_switch.clicked.connect(self.switch)
+#         self.btn_saveCSV.clicked.connect(self.saveCSV)
+#         self.btn_loadCSV.clicked.connect(self.loadCSV)
+#         self.btn_clearList.clicked.connect(self.clearList)
+#         self.btn_close.clicked.connect(self.closeWindow)
+#         # self.FK_list = []  # Replace with your bone names         
+#         self.FK_items =[]
+#         self.IK_items =[]
 
              
-        # Add items to the list
-        self.items = ['Item 1', 'Item 2', 'Item 3']
+#         # Add items to the list
+#         self.items = ['Item 1', 'Item 2', 'Item 3']
 
-        # Set the time range to bake
-        self.start_frame = cmds.playbackOptions(q=True, min=True)
-        self.end_frame = cmds.playbackOptions(q=True, max=True)
+#         # Set the time range to bake
+#         self.start_frame = cmds.playbackOptions(q=True, min=True)
+#         self.end_frame = cmds.playbackOptions(q=True, max=True)
         
 
 
     
-    """
-    Your code goes here
-    """
-    def addUFK(self):
-        print("addUFK Button Clicked")
+#     """
+#     Your code goes here
+#     """
+#     def addUFK(self):
+#         print("addUFK Button Clicked")
         
-        # nurbsCurve Finder
-        somethingSelected = om.MGlobal.getActiveSelectionList()
-        obj = somethingSelected.getDependNode(0)
-        shape = om.MFnDagNode(obj).child(0)
-        mfnDepNode = om.MFnDependencyNode(shape)
-        typeName = mfnDepNode.typeName
+#         # nurbsCurve Finder
+#         somethingSelected = om.MGlobal.getActiveSelectionList()
+#         obj = somethingSelected.getDependNode(0)
+#         shape = om.MFnDagNode(obj).child(0)
+#         mfnDepNode = om.MFnDependencyNode(shape)
+#         typeName = mfnDepNode.typeName
 
-        selected_UFK = cmds.ls(selection=True)
+#         selected_UFK = cmds.ls(selection=True)
 
-        # Get the selected ctrl
-        if typeName == "nurbsCurve":
-            self.scroll_list_UFK.addItem(selected_UFK[0])
-            # Create locator and Constraint
-            cmds.spaceLocator(n=selected_UFK[0]+'_lo')
-            cmds.parentConstraint(selected_UFK[0], selected_UFK[0]+'_lo', maintainOffset=False)
-            self.UFK_locator_list.append(selected_UFK[0]+'_lo')
-            print(self.UFK_locator_list)    
+#         # Get the selected ctrl
+#         if typeName == "nurbsCurve":
+#             self.scroll_list_UFK.addItem(selected_UFK[0])
+#             # Create locator and Constraint
+#             cmds.spaceLocator(n=selected_UFK[0]+'_lo')
+#             cmds.parentConstraint(selected_UFK[0], selected_UFK[0]+'_lo', maintainOffset=False)
+#             self.UFK_locator_list.append(selected_UFK[0]+'_lo')
+#             print(self.UFK_locator_list)    
 
-        # warn for none nurbsCurve 
-        if not typeName == "nurbsCurve":
-            cmds.warning("Please select a controller.")
-            return                    
+#         # warn for none nurbsCurve 
+#         if not typeName == "nurbsCurve":
+#             cmds.warning("Please select a controller.")
+#             return                    
 
-        print(f"'{selected_UFK[0]}' added to the list.")
+#         print(f"'{selected_UFK[0]}' added to the list.")
 
-    def addLFK(self):
-        print("addLFK Button Clicked")
+#     def addLFK(self):
+#         print("addLFK Button Clicked")
 
-        # nurbsCurve Finder
-        somethingSelected = om.MGlobal.getActiveSelectionList()
-        obj = somethingSelected.getDependNode(0)
-        shape = om.MFnDagNode(obj).child(0)
-        mfnDepNode = om.MFnDependencyNode(shape)
-        typeName = mfnDepNode.typeName
+#         # nurbsCurve Finder
+#         somethingSelected = om.MGlobal.getActiveSelectionList()
+#         obj = somethingSelected.getDependNode(0)
+#         shape = om.MFnDagNode(obj).child(0)
+#         mfnDepNode = om.MFnDependencyNode(shape)
+#         typeName = mfnDepNode.typeName
 
-        selected_LFK = cmds.ls(selection=True)
+#         selected_LFK = cmds.ls(selection=True)
 
-        # Get the selected ctrl
-        if typeName == "nurbsCurve":
-            self.scroll_list_LFK.addItem(selected_LFK[0])
-            # Create locator and Constraint
-            cmds.spaceLocator(n=selected_LFK[0]+'_lo')
-            cmds.parentConstraint(selected_LFK[0], selected_LFK[0]+'_lo', maintainOffset=False)
-            self.LFK_locator_list.append(selected_LFK[0]+'_lo')
-            print(self.LFK_locator_list)    
+#         # Get the selected ctrl
+#         if typeName == "nurbsCurve":
+#             self.scroll_list_LFK.addItem(selected_LFK[0])
+#             # Create locator and Constraint
+#             cmds.spaceLocator(n=selected_LFK[0]+'_lo')
+#             cmds.parentConstraint(selected_LFK[0], selected_LFK[0]+'_lo', maintainOffset=False)
+#             self.LFK_locator_list.append(selected_LFK[0]+'_lo')
+#             print(self.LFK_locator_list)    
 
-        # warn for none nurbsCurve 
-        if not typeName == "nurbsCurve":
-            cmds.warning("Please select a controller.")
-            return                             
+#         # warn for none nurbsCurve 
+#         if not typeName == "nurbsCurve":
+#             cmds.warning("Please select a controller.")
+#             return                             
 
-        print(f"'{selected_LFK[0]}' added to the list.")
+#         print(f"'{selected_LFK[0]}' added to the list.")
         
-    def addUIK(self):
-        print("addUIK Button Clicked")
+#     def addUIK(self):
+#         print("addUIK Button Clicked")
                
                 
-        self.selected_UIK = cmds.ls(selection=True)
-        self.scroll_list_UIK.addItem(self.selected_UIK[0])            
+#         self.selected_UIK = cmds.ls(selection=True)
+#         self.scroll_list_UIK.addItem(self.selected_UIK[0])            
 
-        print(f"'{self.selected_UIK[0]}' added to the list.")
+#         print(f"'{self.selected_UIK[0]}' added to the list.")
 
-    def addLIK(self):
-        print("addLIK Button Clicked")
+#     def addLIK(self):
+#         print("addLIK Button Clicked")
          
         
-        self.selected_LIK = cmds.ls(selection=True)
-        self.scroll_list_LIK.addItem(self.selected_LIK[0])            
+#         self.selected_LIK = cmds.ls(selection=True)
+#         self.scroll_list_LIK.addItem(self.selected_LIK[0])            
 
-        print(f"'{self.selected_LIK[0]}' added to the list.")
+#         print(f"'{self.selected_LIK[0]}' added to the list.")
     
-    def switch(self):
-        print("Switch Button Clicked")
+#     def switch(self):
+#         print("Switch Button Clicked")
 
 
-        cmds.spaceLocator(n='ik_foot_loc')
-        cmds.spaceLocator(n='ik_pv_loc')
+#         cmds.spaceLocator(n='ik_foot_loc')
+#         cmds.spaceLocator(n='ik_pv_loc')
 
 
-        cmds.parent('ik_foot_loc','IKLeg_R')
-        cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
-        cmds.setAttr('ik_foot_loc.rotate', 0, 0, 0, type="double3")
-        cmds.parent('ik_foot_loc','Ankle_R')
-        cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
+#         cmds.parent('ik_foot_loc','IKLeg_R')
+#         cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
+#         cmds.setAttr('ik_foot_loc.rotate', 0, 0, 0, type="double3")
+#         cmds.parent('ik_foot_loc','Ankle_R')
+#         cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
 
 
-        cmds.parent('ik_pv_loc','PoleLeg_R')
-        cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
-        cmds.parent('ik_pv_loc','Knee_R')
-        cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+#         cmds.parent('ik_pv_loc','PoleLeg_R')
+#         cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+#         cmds.parent('ik_pv_loc','Knee_R')
+#         cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
 
 
-        a=pm.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
-        b=pm.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
-        pm.delete(a)
-        pm.delete(b)
+#         a=pm.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
+#         b=pm.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
+#         pm.delete(a)
+#         pm.delete(b)
 
+                   
+#         self.collect()
 
-        
-        def set_keyframe_B_if_A_has_keyframe(frame):
-        # Check if controller A has a keyframe at the given frame
-        keyframe_times = cmds.keyframe('A', query=True, timeChange=True)
-        if keyframe_times and frame in keyframe_times:
-            # Get the value of controller A at the frame
-            value = cmds.getAttr('A.translateX', time=frame)
-            print('value=',value)
-            print('frame=',frame)                
-            
-            # Set keyframe for controller B with the same value at the same frame
-            cmds.setKeyframe('B', attribute='translateX', time=frame, value=value)
-
-        def set_keyframes_B_from_A():
-            # Get the start and end frames of the timeline
-            start_frame = cmds.playbackOptions(query=True, minTime=True)
-            print('start_frame=',start_frame)
-            end_frame = cmds.playbackOptions(query=True, maxTime=True)
-            print('end_frame=',end_frame)
-            
-            # Iterate over each frame in the timeline
-            for frame in range(int(start_frame), int(end_frame) + 1):
-                set_keyframe_B_if_A_has_keyframe(frame)
-
-        # Call the function to set keyframes for controller B based on controller A
-        set_keyframes_B_from_A()
-
-
-
-
-        
-        # self.collect()
-
-        # print(self.FK_items, self.IK_items)
+#         print(self.FK_items, self.IK_items)
        
-        # # Connect each pair of FK and IK using parent constraint
-        # for FK, IK in zip(self.FK_items, self.IK_items):
-        #     if cmds.objExists(FK) and cmds.objExists(IK):
+#         # Connect each pair of FK and IK using parent constraint
+#         for FK, IK in zip(self.FK_items, self.IK_items):
+#             if cmds.objExists(FK) and cmds.objExists(IK):
                 
-        #         # Check if the pair exists and apply parent constraint
-        #         constraint = cmds.parentConstraint(self.LFK_locator_list, self.selected_LIK, maintainOffset=False)
-        #         constraint = cmds.pointConstraint(self.UFK_locator_list, self.selected_UIK, maintainOffset=False)
+#                 # Check if the pair exists and apply parent constraint
+#                 constraint = cmds.parentConstraint(self.LFK_locator_list, self.selected_LIK, maintainOffset=False)
+#                 constraint = cmds.pointConstraint(self.UFK_locator_list, self.selected_UIK, maintainOffset=False)
                 
-        #         print(f"Connected: {self.UFK_locator_list} -> {self.selected_UIK}")
-        #         print(f"Connected: {self.LFK_locator_list} -> {self.selected_LIK}")
+#                 print(f"Connected: {self.UFK_locator_list} -> {self.selected_UIK}")
+#                 print(f"Connected: {self.LFK_locator_list} -> {self.selected_LIK}")
 
 
-        #         # Bake the controllers
-        #         # cmds.bakeResults(self.selected_UIK, sm=True, t=(self.start_frame, self.end_frame), at=["tx", "ty", "tz"], sb=1 )
-        #         # cmds.bakeResults(self.selected_LIK, sm=True, t=(self.start_frame, self.end_frame), at=["tx", "ty", "tz", "rx","ry","rz"], sb=1 )
-                
-
-        #         # Delete locators
-        #         # cmds.delete(self.UFK_locator_list)
-        #         # cmds.delete(self.LFK_locator_list)
-
-        #         # Clear list
-        #         self.clearList()
+#                 # Bake the controllers
+#                 # cmds.bakeResults(self.selected_UIK, sm=True, t=(self.start_frame, self.end_frame), at=["tx", "ty", "tz"], sb=1 )
+#                 # cmds.bakeResults(self.selected_LIK, sm=True, t=(self.start_frame, self.end_frame), at=["tx", "ty", "tz", "rx","ry","rz"], sb=1 )
                 
 
+#                 # Delete locators
+#                 # cmds.delete(self.UFK_locator_list)
+#                 # cmds.delete(self.LFK_locator_list)
+
+#                 # Clear list
+#                 self.clearList()
+                
+
 
                 
-        #     else:
-        #         cmds.warning(f"Skipping connection for pair: {FK} -> {IK}. One or both objects do not exist.")
+#             else:
+#                 cmds.warning(f"Skipping connection for pair: {FK} -> {IK}. One or both objects do not exist.")
         
-    def collect(self):
+#     def collect(self):
         
-        # Collect items from the UI QListWidget
-        item_count = self.scroll_list_UIK.count()
-        self.IK_items = [self.scroll_list_UIK.item(i).text() for i in range(item_count)]
-        print("IK Items in QListWidget:", self.IK_items)
+#         # Collect items from the UI QListWidget
+#         item_count = self.scroll_list_UIK.count()
+#         self.IK_items = [self.scroll_list_UIK.item(i).text() for i in range(item_count)]
+#         print("IK Items in QListWidget:", self.IK_items)
 
-        self.FK_items = [self.scroll_list_UFK.item(i).text() for i in range(item_count)]
-        print("FK Items in QListWidget:", self.FK_items)
+#         self.FK_items = [self.scroll_list_UFK.item(i).text() for i in range(item_count)]
+#         print("FK Items in QListWidget:", self.FK_items)
 
-    def saveCSV(self):
+#     def saveCSV(self):
 
-        self.collect()
+#         self.collect()
 
 
-        # Specify the file name
-        file_name = "D:/Justin/output.csv"
+#         # Specify the file name
+#         file_name = "D:/Justin/output.csv"
 
-        # Transpose the data (switch rows and columns)
-        combine_lists = [self.FK_items, self.IK_items]
-        transposed_data = list(map(list, zip(*combine_lists)))
+#         # Transpose the data (switch rows and columns)
+#         combine_lists = [self.FK_items, self.IK_items]
+#         transposed_data = list(map(list, zip(*combine_lists)))
 
-        print(combine_lists)
-        print(transposed_data)
+#         print(combine_lists)
+#         print(transposed_data)
 
-        # Open the file in write mode with newline='' to avoid extra newline characters
-        with open(file_name, mode='w', newline='') as file:
-            # Create a CSV writer object
-            csv_writer = csv.writer(file)
+#         # Open the file in write mode with newline='' to avoid extra newline characters
+#         with open(file_name, mode='w', newline='') as file:
+#             # Create a CSV writer object
+#             csv_writer = csv.writer(file)
 
-            # Write each row in the transposed data to the CSV file
-            csv_writer.writerows(transposed_data)
+#             # Write each row in the transposed data to the CSV file
+#             csv_writer.writerows(transposed_data)
 
-        print(f"The list has been successfully saved to {file_name}.")
+#         print(f"The list has been successfully saved to {file_name}.")
         
-    def loadCSV(self):
-         # Specify the file name
-        file_name = "D:/Justin/output.csv"
+#     def loadCSV(self):
+#          # Specify the file name
+#         file_name = "D:/Justin/output.csv"
 
-        # Check if the file exists
-        if not os.path.exists(file_name):
-            return
+#         # Check if the file exists
+#         if not os.path.exists(file_name):
+#             return
 
-        # Open the file in read mode
-        with open(file_name, mode='r') as file:
-            # Create a CSV reader object
-            csv_reader = csv.reader(file)
+#         # Open the file in read mode
+#         with open(file_name, mode='r') as file:
+#             # Create a CSV reader object
+#             csv_reader = csv.reader(file)
 
-            # Read the rows from the CSV file
-            rows = list(csv_reader)
+#             # Read the rows from the CSV file
+#             rows = list(csv_reader)
 
-            # Ensure there is data in the file
-            if len(rows) > 0:
-                # Separate the transposed data back into bone and ctrl items
-                self.FK_items, self.IK_items = zip(*rows)
+#             # Ensure there is data in the file
+#             if len(rows) > 0:
+#                 # Separate the transposed data back into bone and ctrl items
+#                 self.FK_items, self.IK_items = zip(*rows)
 
-                # Populate the QListWidgets with the loaded data
-                self.clearList()
-                self.scroll_list_UFK.addItems(self.FK_items)
-                self.scroll_list_UIK.addItems(self.IK_items)
+#                 # Populate the QListWidgets with the loaded data
+#                 self.clearList()
+#                 self.scroll_list_UFK.addItems(self.FK_items)
+#                 self.scroll_list_UIK.addItems(self.IK_items)
 
-            print(f"The list has been successfully loaded from {file_name}.")
+#             print(f"The list has been successfully loaded from {file_name}.")
     
-    def clearList(self):
-        # clear both lists
-        self.scroll_list_UFK.clear()
-        self.scroll_list_LFK.clear()
-        self.scroll_list_UIK.clear()
-        self.scroll_list_LIK.clear()
-        self.UFK_locator_list =[]
-        self.LFK_locator_list =[]
-        self.UIK_locator_list =[]
-        self.LIK_locator_list =[]
-        self.selected_UIK = []
-        self.selected_LIK = []
-        print("List Cleared")    
+#     def clearList(self):
+#         # clear both lists
+#         self.scroll_list_UFK.clear()
+#         self.scroll_list_LFK.clear()
+#         self.scroll_list_UIK.clear()
+#         self.scroll_list_LIK.clear()
+#         self.UFK_locator_list =[]
+#         self.LFK_locator_list =[]
+#         self.UIK_locator_list =[]
+#         self.LIK_locator_list =[]
+#         self.selected_UIK = []
+#         self.selected_LIK = []
+#         print("List Cleared")    
     
-    def update_text_scroll_list(self, text_scroll_list, data_list):
-        # Update the text scroll list with the given data list
-        # cmds.textScrollList(text_scroll_list, edit=True, removeAll=True)
-        # cmds.textScrollList(text_scroll_list, edit=True, append=data_list)
-        pass
+#     def update_text_scroll_list(self, text_scroll_list, data_list):
+#         # Update the text scroll list with the given data list
+#         # cmds.textScrollList(text_scroll_list, edit=True, removeAll=True)
+#         # cmds.textScrollList(text_scroll_list, edit=True, append=data_list)
+#         pass
 
-    def resizeEvent(self, event):
-        """
-        Called on automatically generated resize event
-        """
-        self.widget.resize(self.width(), self.height())
+#     def resizeEvent(self, event):
+#         """
+#         Called on automatically generated resize event
+#         """
+#         self.widget.resize(self.width(), self.height())
         
-    def closeWindow(self):
-        """
-        Close window.
-        """
-        print ('closing window')
-        self.destroy()
+#     def closeWindow(self):
+#         """
+#         Close window.
+#         """
+#         print ('closing window')
+#         self.destroy()
     
-def openWindow():
-    """
-    ID Maya and attach tool window.
-    """
-    # Maya uses this so it should always return True
-    if QtWidgets.QApplication.instance():
-        # Id any current instances of tool and destroy
-        for win in (QtWidgets.QApplication.allWindows()):
-            if 'myToolWindowName' in win.objectName(): # update this name to match name below
-                win.destroy()
+# def openWindow():
+#     """
+#     ID Maya and attach tool window.
+#     """
+#     # Maya uses this so it should always return True
+#     if QtWidgets.QApplication.instance():
+#         # Id any current instances of tool and destroy
+#         for win in (QtWidgets.QApplication.allWindows()):
+#             if 'myToolWindowName' in win.objectName(): # update this name to match name below
+#                 win.destroy()
 
-    #QtWidgets.QApplication(sys.argv)
-    mayaMainWindowPtr = omui.MQtUtil.mainWindow()
-    mayaMainWindow = wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
-    FK_IK_Switch.window = FK_IK_Switch(parent = mayaMainWindow)
-    FK_IK_Switch.window.setObjectName('myToolWindowName') # code above uses this to ID any existing windows
-    FK_IK_Switch.window.setWindowTitle('Justin\'s FK <-> IK Switch Tool')
-    FK_IK_Switch.window.show()
+#     #QtWidgets.QApplication(sys.argv)
+#     mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+#     mayaMainWindow = wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
+#     FK_IK_Switch.window = FK_IK_Switch(parent = mayaMainWindow)
+#     FK_IK_Switch.window.setObjectName('myToolWindowName') # code above uses this to ID any existing windows
+#     FK_IK_Switch.window.setWindowTitle('Justin\'s FK <-> IK Switch Tool')
+#     FK_IK_Switch.window.show()
     
-openWindow()
+# openWindow()
