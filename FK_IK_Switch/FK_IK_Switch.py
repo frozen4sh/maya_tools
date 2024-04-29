@@ -5,6 +5,12 @@ This tool helps to switch between FK and IK controller's key animaiton.
 
 # future update list
 
+FK-> IK 추가 업데이트 리스트 (2024.04.29)
+현재 FK-> IK 전환은 성공
+FK에 키가 있는 프레임에만 IK에 키를 찍기
+
+
+
 FK-> IK 전환 시나리오 (수정안 2024.04.22)
 로케이터를 2개 생성한다. ik_foot_loc, ik_pv_loc
 cmds.spaceLocator(n='ik_foot_loc')
@@ -14,77 +20,13 @@ FKIKLeg_R 의 FKIKBlend 수치를 10으로 맞춰서 IK모드로 변경 시킨�
 cmds.setAttr('FKIKLeg_R.FKIKBlend', 10)
 
 
-
-ik_foot_loc를 IKLeg_R에 패런트 시킨다.
-cmds.parent('ik_foot_loc','IKLeg_R')
-위치값 및 로테이션 값을 000으로 한다.
-cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
-cmds.setAttr('ik_foot_loc.rotate', 0, 0, 0, type="double3")
-ik_foot_loc를 Ankle_R에 패런트 시킨다.
-cmds.parent('ik_foot_loc','Ankle_R')
-
-ik_pv_loc를 PoleLeg_R에 패런트 시킨다.
-cmds.parent('ik_pv_loc','PoleLeg_R')
-위치값 000 으로 맞춘다
-cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
-ik_foot_loc를 Knee_R에 패런트 시킨다.
-cmds.parent('ik_pv_loc','Knee_R')
-위치값 000 으로 맞춘다
-cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
-
-
-FKIKLeg_R 의 FKIKBlend 수치를 0으로 맞춰서 FK모드로 변경 시킨다.
-cmds.setAttr('FKIKLeg_R.FKIKBlend', 0)
-
-a=pm.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
-b=pm.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
-pm.delete(a)
-pm.delete(b)
-
-해준다.
-
-해당 작업을 키가 있는곳만 위의 내용을 반복 시키고 키를 찍는다.
-전부 키를 찍으면 로케이터 2개를 삭제한다.
-
-
-
-
-
-FK -> IK 전환 시나리오 (초안)
-1. FK -> IK의 경우 임시 로케이터 두개를 생성한다. 
-2. 생성한 임시 로케이터를 각각 발목과 무릎에 배치하고 컨트롤러의 TR 값과 동일하게 맞춘다. 
-3. 발목 컨트롤러 키를 발목 임시 로케이터에 복사한다.
-4. 무릎 컨트롤러의 키를 무릎 임시 로케이터에 복사한다.
-5. Attribute 를 이용하여 FK -> IK 로 전환 시킨다.
-6. 발목 임시 로케이터와 발IK컨트롤러를 Parent 컨스트레인 시킨다.
-7. 무릎 임시 로케이터와 다리 폴벡터를 Point 컨스트레인 시킨다.
-8. 베이크 시킨다.
-9. 임시 로케이터들을 삭제한다.
-
-
-FK -> IK 전환 시나리오 (수정안)
-1. Frame Range 제일 처음으로 간다.
-2. FK컨트롤러에 키가 있는 프레임으로 간다.
-3. FK컨트롤러에 키가 없다면 다음프레임으로 간다.
-4. FK발목 조인트 위치를 저장한다.
-5. FK무릎 조인트 위치를 저장한다.
-6. Attribute 를 이용하여 FK -> IK 로 전환 시킨다.
-7. 저장된 FK발목 조인트 위치를 발IK컨트롤러에 붙여넣고 키를 준다.
-8. 저장된 FK무릎 조인트 위치를 다리 폴벡터에 붙여넣고 키를 준다.
-9. Frame Range 제일 끝까지 2~8 반복
-
-
-프레임마다 fK컨트롤러 위치를 프린트 한다 ok
-
-
-
-
-
 Maya/QT UI template
 Maya 2023
 """
 
 import maya.cmds as cmds
+
+cmds.scriptEditorInfo(suppressWarnings=0,suppressInfo=0,se=0)
 
 def createLocators():
     print('createLocators')
@@ -147,6 +89,73 @@ for frame in range(int(start_frame), int(end_frame) + 1):
 
 deleteConstraintLocators()
 
+
+
+
+
+
+'''
+ik_foot_loc를 IKLeg_R에 패런트 시킨다.
+cmds.parent('ik_foot_loc','IKLeg_R')
+위치값 및 로테이션 값을 000으로 한다.
+cmds.setAttr('ik_foot_loc.translate', 0, 0, 0, type="double3")
+cmds.setAttr('ik_foot_loc.rotate', 0, 0, 0, type="double3")
+ik_foot_loc를 Ankle_R에 패런트 시킨다.
+cmds.parent('ik_foot_loc','Ankle_R')
+
+ik_pv_loc를 PoleLeg_R에 패런트 시킨다.
+cmds.parent('ik_pv_loc','PoleLeg_R')
+위치값 000 으로 맞춘다
+cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+ik_foot_loc를 Knee_R에 패런트 시킨다.
+cmds.parent('ik_pv_loc','Knee_R')
+위치값 000 으로 맞춘다
+cmds.setAttr('ik_pv_loc.translate', 0, 0, 0, type="double3")
+
+
+FKIKLeg_R 의 FKIKBlend 수치를 0으로 맞춰서 FK모드로 변경 시킨다.
+cmds.setAttr('FKIKLeg_R.FKIKBlend', 0)
+
+a=pm.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
+b=pm.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
+pm.delete(a)
+pm.delete(b)
+
+해준다.
+
+해당 작업을 키가 있는곳만 위의 내용을 반복 시키고 키를 찍는다.
+전부 키를 찍으면 로케이터 2개를 삭제한다.
+
+
+
+
+
+FK -> IK 전환 시나리오 (초안)
+1. FK -> IK의 경우 임시 로케이터 두개를 생성한다. 
+2. 생성한 임시 로케이터를 각각 발목과 무릎에 배치하고 컨트롤러의 TR 값과 동일하게 맞춘다. 
+3. 발목 컨트롤러 키를 발목 임시 로케이터에 복사한다.
+4. 무릎 컨트롤러의 키를 무릎 임시 로케이터에 복사한다.
+5. Attribute 를 이용하여 FK -> IK 로 전환 시킨다.
+6. 발목 임시 로케이터와 발IK컨트롤러를 Parent 컨스트레인 시킨다.
+7. 무릎 임시 로케이터와 다리 폴벡터를 Point 컨스트레인 시킨다.
+8. 베이크 시킨다.
+9. 임시 로케이터들을 삭제한다.
+
+
+FK -> IK 전환 시나리오 (수정안)
+1. Frame Range 제일 처음으로 간다.
+2. FK컨트롤러에 키가 있는 프레임으로 간다.
+3. FK컨트롤러에 키가 없다면 다음프레임으로 간다.
+4. FK발목 조인트 위치를 저장한다.
+5. FK무릎 조인트 위치를 저장한다.
+6. Attribute 를 이용하여 FK -> IK 로 전환 시킨다.
+7. 저장된 FK발목 조인트 위치를 발IK컨트롤러에 붙여넣고 키를 준다.
+8. 저장된 FK무릎 조인트 위치를 다리 폴벡터에 붙여넣고 키를 준다.
+9. Frame Range 제일 끝까지 2~8 반복
+
+
+프레임마다 fK컨트롤러 위치를 프린트 한다 ok
+'''
 
 
 # import maya.cmds as cmds
