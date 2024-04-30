@@ -4,11 +4,14 @@ Created by Justin Yehun Hwang 25/03/2024
 This tool helps to switch between FK and IK controller's key animaiton.
 
 # future update list
+FK-> IK 추가 업데이트 리스트 (2024.04.30)
+UI형태로 원하는 컨트롤러 추가해서 작업하기
+
+
 
 FK-> IK 추가 업데이트 리스트 (2024.04.29)
 현재 FK-> IK 전환은 성공
-FK에 키가 있는 프레임에만 IK에 키를 찍기
-
+FK에 키가 있는 프레임에만 IK에 키를 찍기 - 성공
 
 
 FK-> IK 전환 시나리오 (수정안 2024.04.22)
@@ -26,7 +29,8 @@ Maya 2023
 
 import maya.cmds as cmds
 
-cmds.scriptEditorInfo(suppressWarnings=0,suppressInfo=0,se=0)
+# Hide warnings
+cmds.scriptEditorInfo(suppressWarnings=1,suppressInfo=1,se=0)
 
 def createLocators():
     print('createLocators')
@@ -83,11 +87,90 @@ parentLocators()
 
 for frame in range(int(start_frame), int(end_frame) + 1):
     cmds.currentTime(frame)
-
     print('frame=',frame)
-    repeateAndKey()
+
+    # Check if controller A has a keyframe at the given frame
+    FKAnkle_keyframe_times = cmds.keyframe('FKAnkle_R', query=True, timeChange=True)
+    print('FKAnkle_keyframe_times=',FKAnkle_keyframe_times)
+    if FKAnkle_keyframe_times and frame in FKAnkle_keyframe_times:
+        repeateAndKey()
+
+    FKKnee_keyframe_times = cmds.keyframe('FKKnee_R', query=True, timeChange=True)
+    print('FKKnee_keyframe_times=',FKKnee_keyframe_times)
+    if FKKnee_keyframe_times and frame in FKKnee_keyframe_times:
+        repeateAndKey()
 
 deleteConstraintLocators()
+
+
+# def set_keyframe_B_if_A_has_keyframe(frame):
+#     # Check if controller A has a keyframe at the given frame
+#     keyframe_times = cmds.keyframe('FKAnkle_R', query=True, timeChange=True)
+#     # print('keyframe_times=',keyframe_times)
+#     if keyframe_times and frame in keyframe_times:
+
+#         # Set keyframe for controller B with the same value at the same frame
+#         cmds.setKeyframe('IKLeg_R', time=frame)
+#         cmds.setKeyframe('PoleLeg_R', time=frame)
+
+# def set_keyframes_B_from_A():
+#     # Get the start and end frames of the timeline
+#     start_frame = cmds.playbackOptions(query=True, minTime=True)
+#     print('start_frame=',start_frame)
+#     end_frame = cmds.playbackOptions(query=True, maxTime=True)
+#     print('end_frame=',end_frame)
+
+#     # Iterate over each frame in the timeline
+
+#     for frame in range(int(start_frame), int(end_frame) + 1):
+
+#         # Constraint locator and IK controller
+#         a=pm.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
+#         b=pm.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
+
+#     a=cmds.parentConstraint('ik_foot_loc','IKLeg_R',mo=0)
+#     b=cmds.pointConstraint('ik_pv_loc','PoleLeg_R',mo=0)
+
+#         # Set keyframe for controller B with the same value at the same frame
+#         cmds.setKeyframe('IKLeg_R', time=frame)
+#         cmds.setKeyframe('PoleLeg_R', time=frame)
+#         print('frame=',frame)
+
+#         # set_keyframe_B_if_A_has_keyframe(frame) 
+#     # Key 2 controllers
+#     cmds.setKeyframe('IKLeg_R')
+#     cmds.setKeyframe('PoleLeg_R')
+
+#         # Delete constraints
+#         pm.delete(a)
+#         pm.delete(b)
+
+#     # Delete constraints
+#     cmds.delete(a)
+#     cmds.delete(b)   
+
+
+# # Get the start and end frames of the timeline
+# start_frame = cmds.playbackOptions(query=True, minTime=True)
+# print('start_frame=',start_frame)
+# end_frame = cmds.playbackOptions(query=True, maxTime=True)
+# print('end_frame=',end_frame)
+
+# # Iterate over each frame in the timeline
+
+# createLocators()
+# parentLocators()
+
+# # Call the function to set keyframes for controller B based on controller A
+# set_keyframes_B_from_A()
+# for frame in range(int(start_frame), int(end_frame) + 1):
+#     cmds.currentTime(frame)
+
+#     print('frame=',frame)
+#     repeateAndKey()
+
+# # deleteConstraintLocators
+# deleteConstraintLocators()
 
 
 
