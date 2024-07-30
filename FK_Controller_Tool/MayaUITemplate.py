@@ -1,4 +1,4 @@
-"""
+""" 
 Justin's FK -> Controller Tool
 Created by Justin Yehun Hwang 20/02/2024
 This tool helps to connect between controller and exist bone animaiton.
@@ -38,7 +38,7 @@ class MayaUITemplate(QtWidgets.QWidget):
         """
         super(MayaUITemplate, self).__init__(parent = parent)
         self.setWindowFlags(QtCore.Qt.Window)
-        self.widgetPath = ('FK_Controller_Tool.ui')
+        self.widgetPath = ('C:\\Users\\frozenash\\Documents\\maya_tools\\FK_Controller_Tool\\FK_Controller_Tool.ui')
         self.widget = QtUiTools.QUiLoader().load(self.widgetPath)
         self.widget.setParent(self)
         
@@ -81,10 +81,10 @@ class MayaUITemplate(QtWidgets.QWidget):
     def addBone(self):
         
         # Get the selected bone
-        selected_bone = cmds.ls(selection=True, type="joint")
-        if not selected_bone:
-            cmds.warning("Please select a bone.")
-            return
+        selected_bone = cmds.ls(selection=True)
+        # if not selected_bone:
+        #     cmds.warning("Please select a locator.")
+        #     return
                 
         self.scroll_list_bone.addItem(selected_bone[0])
 
@@ -93,23 +93,24 @@ class MayaUITemplate(QtWidgets.QWidget):
     
     def addCtrl(self):
                 
-        # nurbsCurve Finder
-        somethingSelected = om.MGlobal.getActiveSelectionList()
-        obj = somethingSelected.getDependNode(0)
-        shape = om.MFnDagNode(obj).child(0)
-        mfnDepNode = om.MFnDependencyNode(shape)
-        typeName = mfnDepNode.typeName
+        # # nurbsCurve Finder
+        # somethingSelected = om.MGlobal.getActiveSelectionList()
+        # obj = somethingSelected.getDependNode(0)
+        # shape = om.MFnDagNode(obj).child(0)
+        # mfnDepNode = om.MFnDependencyNode(shape)
+        # typeName = mfnDepNode.typeName
 
         selected_ctrl = cmds.ls(selection=True)
 
-        # Get the selected ctrl
-        if typeName == "nurbsCurve":
-            self.scroll_list_ctrl.addItem(selected_ctrl[0])            
+        # # Get the selected ctrl
+        # if typeName == "joint":
+        #     self.scroll_list_ctrl.addItem(selected_ctrl[0])            
 
+        self.scroll_list_ctrl.addItem(selected_ctrl[0])            
 
-        if not typeName == "nurbsCurve":
-            cmds.warning("Please select a controller.")
-            return          
+        # if not typeName == "joint":
+        #     cmds.warning("Please select a bone.")
+        #     return          
        
 
         print(f"Bone '{selected_ctrl[0]}' added to the list.")
@@ -167,7 +168,7 @@ class MayaUITemplate(QtWidgets.QWidget):
 
 
         # Specify the file name
-        file_name = "output.csv"
+        file_name = "C:\\Users\\frozenash\\Documents\\maya\\output.csv"
 
         # Transpose the data (switch rows and columns)
         combine_lists = [self.bone_items, self.ctrl_items]
@@ -189,7 +190,7 @@ class MayaUITemplate(QtWidgets.QWidget):
 
     def loadCSV(self):
          # Specify the file name
-        file_name = "output.csv"
+        file_name = "C:\\Users\\frozenash\\Documents\\maya\\output.csv"
 
         # Check if the file exists
         if not os.path.exists(file_name):
