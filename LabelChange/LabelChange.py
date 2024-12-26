@@ -11,4 +11,5 @@ for obj in selected_objects:
         new_value = obj.replace("CC_Base_", "")
         
         # Set the attribute for this object
+        cmds.setAttr(f"{obj}.type", 18)
         cmds.setAttr(f"{obj}.otherType", new_value, type="string")
